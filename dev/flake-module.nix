@@ -51,8 +51,8 @@
     githubActions = {
       enable = true;
 
-      workflows.build = {
-        name = "Build and Publish";
+      workflows.ci = {
+        name = "CI";
 
         on = {
           push.branches = ["master"];
@@ -60,58 +60,14 @@
           workflowDispatch = {};
         };
 
-        jobs = {
-          build = {
-            name = "Build packages";
-            runsOn = "ubuntu-latest";
-
-            permissions = {
-              id-token = "write";
-              contents = "read";
-            };
-
-            steps = [
-              {uses = "actions/checkout@v4";}
-              {uses = "DeterminateSystems/determinate-nix-action@v3";}
-              {uses = "DeterminateSystems/flakehub-cache-action@main";}
-              {uses = "DeterminateSystems/flake-checker-action@main";}
-              {
-                name = "Check flake";
-                run = "nix flake check";
-              }
-              {
-                name = "Build packages";
-                run = ''
-                  nix build .#flakehub-deploy-runner
-                  nix build .#flakehub-webhook-handler
-                '';
-              }
-            ];
+        jobs.nix-ci = {
+          uses = "DeterminateSystems/ci/.github/workflows/workflow.yml@main";
+          permissions = {
+            id-token = "write";
+            contents = "read";
           };
-
-          publish = {
-            name = "Publish to FlakeHub";
-            runsOn = "ubuntu-latest";
-            needs = "build";
-            if_ = "github.ref == 'refs/heads/master' && needs.build.result == 'success'";
-
-            permissions = {
-              id-token = "write";
-              contents = "read";
-            };
-
-            steps = [
-              {uses = "actions/checkout@v4";}
-              {uses = "DeterminateSystems/determinate-nix-action@v3";}
-              {
-                uses = "DeterminateSystems/flakehub-push@main";
-                with_ = {
-                  visibility = "public";
-                  rolling = true;
-                  rolling-minor = "0.1";
-                };
-              }
-            ];
+          with_ = {
+            visibility = "public";
           };
         };
       };
