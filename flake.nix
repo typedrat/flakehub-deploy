@@ -25,6 +25,7 @@
 
       flake = let
         overlay = final: _prev: {
+          flakehub-deploy-runner = final.callPackage ./packages/flakehub-deploy-runner {};
           flakehub-webhook-handler = final.callPackage ./packages/flakehub-webhook-handler {};
         };
       in {
@@ -64,6 +65,7 @@
             (pkgs.python3.withPackages (ps:
               with ps; [
                 fastapi
+                httpx
                 pydantic
                 uvicorn
               ]))
@@ -71,6 +73,7 @@
         };
 
         packages = {
+          flakehub-deploy-runner = pkgs.callPackage ./packages/flakehub-deploy-runner {};
           flakehub-webhook-handler = pkgs.callPackage ./packages/flakehub-webhook-handler {};
         };
       };
