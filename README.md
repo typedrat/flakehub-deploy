@@ -116,41 +116,41 @@ Import the module in your NixOS configuration:
 
 ### `services.flakehub-deploy`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `enable` | bool | `false` | Enable FlakeHub GitOps deployment |
-| `flakeRef` | string | — | FlakeHub flake reference (e.g., `org/repo/0.1`) |
-| `configuration` | string | hostname | NixOS configuration name to deploy |
-| `operation` | enum | `"switch"` | `"switch"` or `"boot"` |
-| `rollback.enable` | bool | `true` | Auto-rollback on failure |
+| Option            | Type   | Default    | Description                                     |
+| ----------------- | ------ | ---------- | ----------------------------------------------- |
+| `enable`          | bool   | `false`    | Enable FlakeHub GitOps deployment               |
+| `flakeRef`        | string | —          | FlakeHub flake reference (e.g., `org/repo/0.1`) |
+| `configuration`   | string | hostname   | NixOS configuration name to deploy              |
+| `operation`       | enum   | `"switch"` | `"switch"` or `"boot"`                          |
+| `rollback.enable` | bool   | `true`     | Auto-rollback on failure                        |
 
 ### `services.flakehub-deploy.polling`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `enable` | bool | `false` | Enable polling fallback |
-| `interval` | string | `"15m"` | Polling interval |
+| Option     | Type   | Default | Description             |
+| ---------- | ------ | ------- | ----------------------- |
+| `enable`   | bool   | `false` | Enable polling fallback |
+| `interval` | string | `"15m"` | Polling interval        |
 
 ### `services.flakehub-deploy.webhook`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `enable` | bool | `false` | Enable webhook listener |
-| `port` | int | auto | Port for webhook server |
-| `secretFile` | path | — | File containing GitHub webhook secret |
+| Option       | Type | Default | Description                           |
+| ------------ | ---- | ------- | ------------------------------------- |
+| `enable`     | bool | `false` | Enable webhook listener               |
+| `port`       | int  | auto    | Port for webhook server               |
+| `secretFile` | path | —       | File containing GitHub webhook secret |
 
 ### `services.flakehub-deploy.tunnel`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `enable` | bool | `false` | Enable Cloudflare Tunnel |
-| `environmentFile` | path | — | File containing `TUNNEL_TOKEN=<token>` |
+| Option            | Type | Default | Description                            |
+| ----------------- | ---- | ------- | -------------------------------------- |
+| `enable`          | bool | `false` | Enable Cloudflare Tunnel               |
+| `environmentFile` | path | —       | File containing `TUNNEL_TOKEN=<token>` |
 
 ### `services.flakehub-deploy.notification.discord`
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `webhookUrlFile` | path | `null` | File containing Discord webhook URL |
+| Option           | Type | Default | Description                         |
+| ---------------- | ---- | ------- | ----------------------------------- |
+| `webhookUrlFile` | path | `null`  | File containing Discord webhook URL |
 
 ## GitHub Actions Setup
 
@@ -176,6 +176,7 @@ publish:
 ```
 
 Configure a repository webhook:
+
 - **URL**: `https://your-webhook-endpoint/hooks/deploy`
 - **Content type**: `application/json`
 - **Secret**: Same as `webhook.secretFile`
@@ -202,8 +203,8 @@ GitHub Actions                     Target System
                                   │  │ poll timer          │──┐  │
                                   │  │ (fallback)          │  │  │
                                   │  └─────────────────────┘  │  │
-                                  │             ↑              │  │
-                                  │             └──────────────┘  │
+                                  │             ↑             │  │
+                                  │             └─────────────┘  │
                                   └──────────────────────────────┘
 ```
 
