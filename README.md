@@ -1,5 +1,7 @@
 # flakehub-deploy
 
+[![FlakeHub](https://img.shields.io/endpoint?url=https://flakehub.com/f/typedrat/flakehub-deploy/badge)](https://flakehub.com/flake/typedrat/flakehub-deploy)
+
 A NixOS module for GitOps-style deployments using [FlakeHub](https://flakehub.com).
 
 ## Overview
@@ -25,9 +27,7 @@ Add the flake to your inputs:
 
 ```nix
 {
-  inputs.flakehub-deploy.url = "github:your-org/flakehub-deploy";
-  # Or from FlakeHub once published:
-  # inputs.flakehub-deploy.url = "https://flakehub.com/f/your-org/flakehub-deploy/*";
+  inputs.flakehub-deploy.url = "https://flakehub.com/f/typedrat/flakehub-deploy/*";
 }
 ```
 
