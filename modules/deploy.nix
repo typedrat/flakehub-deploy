@@ -115,9 +115,12 @@ in {
       description = "FlakeHub Deployment Polling Timer";
       wantedBy = ["timers.target"];
       timerConfig = {
-        OnBootSec = "5m";
+        # Use OnActiveSec instead of OnBootSec to avoid triggering immediately
+        # when activating a new NixOS configuration on a system that's been up
+        OnActiveSec = "5m";
         OnUnitActiveSec = cfg.polling.interval;
         RandomizedDelaySec = "2m";
+        Persistent = false;
       };
     };
 
