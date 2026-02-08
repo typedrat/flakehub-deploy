@@ -11,17 +11,7 @@ in {
   options.services.flakehub-deploy.webhook = {
     enable = mkEnableOption "webhook listener for GitHub deployments";
 
-    package =
-      mkPackageOption pkgs "flakehub-webhook-handler" {
-        default = null;
-        nullable = true;
-      }
-      // {
-        description = ''
-          The flakehub-webhook-handler package to use. If null, you must add
-          the package to the module's nixpkgs overlay or provide it via specialArgs.
-        '';
-      };
+    package = mkPackageOption pkgs "flakehub-webhook-handler" {};
 
     port = mkOption {
       type = types.port;
@@ -39,17 +29,6 @@ in {
   };
 
   config = mkIf (cfg.enable && webhookCfg.enable) {
-    assertions = [
-      {
-        assertion = webhookCfg.package != null;
-        message = ''
-          services.flakehub-deploy.webhook.package must be set.
-          Either provide the flakehub-webhook-handler package directly or add
-          the flakehub-deploy flake's overlay to your nixpkgs.
-        '';
-      }
-    ];
-
     # Webhook service using FastAPI handler
     systemd.services.flakehub-webhook-handler = {
       description = "GitHub Webhook Handler for FlakeHub Deploy";

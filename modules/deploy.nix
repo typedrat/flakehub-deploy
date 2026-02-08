@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf mkMerge mkOption types;
+  inherit (lib) mkEnableOption mkIf mkOption types;
   cfg = config.services.flakehub-deploy;
 
   stateDir = "/var/lib/flakehub-deploy";

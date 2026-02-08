@@ -20,10 +20,22 @@
 
       systems = ["x86_64-linux" "aarch64-linux"];
 
-      flake = {
+      flake = let
+        overlay = final: _prev: {
+          flakehub-webhook-handler = final.callPackage ./packages/flakehub-webhook-handler {};
+        };
+      in {
+        overlays.default = overlay;
+
         nixosModules = {
-          default = ./modules;
-          flakehub-deploy = ./modules;
+          default = {
+            imports = [./modules];
+            nixpkgs.overlays = [overlay];
+          };
+          flakehub-deploy = {
+            imports = [./modules];
+            nixpkgs.overlays = [overlay];
+          };
         };
       };
 
