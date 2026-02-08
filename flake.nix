@@ -3,8 +3,11 @@
 
   inputs = {
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+
     flake-parts.url = "https://flakehub.com/f/hercules-ci/flake-parts/*";
+
     flake-root.url = "github:srid/flake-root";
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,17 +28,19 @@
           flakehub-webhook-handler = final.callPackage ./packages/flakehub-webhook-handler {};
         };
       in {
-        overlays.default = overlay;
+        overlays = rec {
+          flakehub-deploy = overlay;
 
-        nixosModules = {
-          default = {
-            imports = [./modules];
-            nixpkgs.overlays = [overlay];
-          };
+          default = flakehub-deploy;
+        };
+
+        nixosModules = rec {
           flakehub-deploy = {
             imports = [./modules];
             nixpkgs.overlays = [overlay];
           };
+
+          default = flakehub-deploy;
         };
       };
 
@@ -52,6 +57,17 @@
             ruff-format.enable = true;
             taplo.enable = true;
           };
+        };
+
+        devShells.default = pkgs.mkShellNoCC {
+          packages = [
+            (pkgs.python3.withPackages (ps:
+              with ps; [
+                fastapi
+                pydantic
+                uvicorn
+              ]))
+          ];
         };
 
         packages = {
