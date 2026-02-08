@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flakehub-webhook-handler"
+version = "0.1.0"
+description = "GitHub webhook handler for FlakeHub deployments"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.100.0", "uvicorn>=0.20.0", "pydantic>=2.0.0"]
+
+[project.scripts]
+flakehub-webhook-handler = "flakehub_webhook_handler:main"
+
+[tool.setuptools]
+py-modules = ["flakehub_webhook_handler"]

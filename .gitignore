@@ -1,0 +1,27 @@
+# Nix build outputs
+result
+result-*
+
+# direnv
+.direnv/
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.ruff_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
