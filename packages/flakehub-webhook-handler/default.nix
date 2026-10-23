@@ -22,7 +22,10 @@ python3Packages.buildPythonApplication {
   ];
 
   makeWrapperArgs = [
-    "--prefix PATH : ${lib.makeBinPath [systemd]}"
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath [systemd])
   ];
 
   # No tests yet

@@ -23,6 +23,9 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
+# httpx logs every request URL at INFO, and a Discord webhook URL is itself the
+# credential.
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 class Color(Enum):
@@ -150,14 +153,14 @@ def deploy(config: DeployConfig) -> int:
     # Ensure state directory exists
     config.state_dir.mkdir(parents=True, exist_ok=True)
 
-    logger.info(
-        f"Resolving FlakeHub reference: "
-        f"{config.flake_ref}#nixosConfigurations.{config.configuration}"
-    )
+    # fh resolve only accepts output references, so the attribute path is part
+    # of what gets resolved, not just of the log line.
+    output_ref = f"{config.flake_ref}#nixosConfigurations.{config.configuration}"
+    logger.info(f"Resolving FlakeHub reference: {output_ref}")
 
     # Resolve the current version from FlakeHub
     try:
-        resolved = resolve_flake_ref(config.flake_ref)
+        resolved = resolve_flake_ref(output_ref)
     except subprocess.CalledProcessError as e:
         error_msg = e.stderr or str(e)
         logger.error(f"Failed to resolve FlakeHub reference: {error_msg}")

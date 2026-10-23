@@ -21,7 +21,10 @@ python3Packages.buildPythonApplication {
   ];
 
   makeWrapperArgs = [
-    "--prefix PATH : ${lib.makeBinPath [fh nixos-rebuild]}"
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath [fh nixos-rebuild])
   ];
 
   # No tests yet
